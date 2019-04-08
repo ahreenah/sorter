@@ -1,0 +1,111 @@
+object Form1: TForm1
+  Left = 199
+  Height = 177
+  Top = 139
+  Width = 324
+  Caption = 'Form1'
+  ClientHeight = 177
+  ClientWidth = 324
+  OnCreate = FormCreate
+  LCLVersion = '1.8.4.0'
+  object Button1: TButton
+    AnchorSideLeft.Control = Owner
+    AnchorSideTop.Control = Owner
+    Left = 0
+    Height = 25
+    Top = 0
+    Width = 75
+    Caption = 'Open file'
+    OnClick = Button1Click
+    TabOrder = 0
+  end
+  object Label1: TLabel
+    AnchorSideLeft.Control = Button1
+    AnchorSideLeft.Side = asrBottom
+    AnchorSideTop.Control = Button1
+    AnchorSideTop.Side = asrCenter
+    Left = 75
+    Height = 17
+    Top = 4
+    Width = 75
+    Caption = 'Not opened'
+    ParentColor = False
+  end
+  object CheckBox1: TCheckBox
+    AnchorSideTop.Control = Button1
+    AnchorSideTop.Side = asrBottom
+    Left = 8
+    Height = 21
+    Top = 25
+    Width = 137
+    Caption = 'Delete duplicates'
+    OnChange = CheckBox1Change
+    TabOrder = 1
+  end
+  object Button2: TButton
+    Left = 0
+    Height = 25
+    Top = 152
+    Width = 324
+    Align = alBottom
+    Anchors = []
+    Caption = 'Start'
+    OnClick = Button2Click
+    TabOrder = 2
+  end
+  object RadioGroup1: TRadioGroup
+    AnchorSideLeft.Control = Owner
+    AnchorSideTop.Control = CheckBox1
+    AnchorSideTop.Side = asrBottom
+    AnchorSideRight.Control = Owner
+    AnchorSideRight.Side = asrBottom
+    AnchorSideBottom.Control = Button2
+    Left = 0
+    Height = 106
+    Top = 46
+    Width = 324
+    Anchors = [akTop, akLeft, akRight]
+    AutoFill = True
+    Caption = 'Sorting'
+    ChildSizing.LeftRightSpacing = 6
+    ChildSizing.EnlargeHorizontal = crsHomogenousChildResize
+    ChildSizing.EnlargeVertical = crsHomogenousChildResize
+    ChildSizing.ShrinkHorizontal = crsScaleChilds
+    ChildSizing.ShrinkVertical = crsScaleChilds
+    ChildSizing.Layout = cclLeftToRightThenTopToBottom
+    ChildSizing.ControlsPerLine = 1
+    ClientHeight = 87
+    ClientWidth = 320
+    TabOrder = 3
+    object RadioButton1: TRadioButton
+      Left = 6
+      Height = 29
+      Top = 0
+      Width = 308
+      Caption = 'Asc'
+      Checked = True
+      TabOrder = 0
+      TabStop = True
+    end
+    object RadioButton2: TRadioButton
+      Left = 6
+      Height = 29
+      Top = 29
+      Width = 308
+      Caption = 'Desc'
+      TabOrder = 1
+    end
+    object RadioButton3: TRadioButton
+      Left = 6
+      Height = 29
+      Top = 58
+      Width = 308
+      Caption = 'None'
+      TabOrder = 2
+    end
+  end
+  object OpenDialog1: TOpenDialog
+    left = 224
+    top = 8
+  end
+end
