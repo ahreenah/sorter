@@ -105,6 +105,11 @@ begin
             begin
               lstrev.Duplicates:=dupIgnore;
               lst.Duplicates:=dupIgnore;
+            end
+          else
+            begin
+              lstrev.Duplicates:=dupAccept;
+              lst.Duplicates:=dupAccept;
             end;
           while(filestream.Read(ch,1)=1) do
              if  (ch <> sLineBreak) then
@@ -128,7 +133,8 @@ begin
             end;
 
           filestream.Destroy;
-          filestream:=TFileStream.Create(path,fmOpenWrite);
+          FileCreate(path+'.new');
+          filestream:=TFileStream.Create(path+'.new',fmOpenWrite);
           lst.SaveToStream(filestream);//writeerror
         finally
           filestream.free;
