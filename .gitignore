@@ -1,0 +1,4 @@
+lib/
+backup/
+*.7z
+gui

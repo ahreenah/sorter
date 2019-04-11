@@ -39,10 +39,8 @@ var
   opt:TSorterOptions;
   path, flagstring, readdata,tmp,line:string;
   ch:char;
-  alst:array [1..32767] of string;
-  fil:text;
   filestream:TFileStream;
-  i,ind:integer;
+  i:integer;
 
 implementation
 
@@ -94,7 +92,6 @@ begin
         ShowMessage('Done!'+sLineBreak+'file path: '+path+sLineBreak+flagstring);
         filestream:=TFileStream.Create(path,fmOpenRead);
         try
-          // старое чтение файла
           {SetLength(readdata,filestream.size);
           for i:=1 to 5 do
           begin
@@ -102,81 +99,45 @@ begin
           end;
           ShowMessage(readdata);}
           lst:=TStringList.Create;
-          //lst.Duplicates:=dupAccept;
           line:='';
           lstrev:=TStringList.Create();
-          // вроде выбрасывает дупы, но и без этого тоэъже выбрасывает
-          {
           if opt.DelDuplicates=DelAllDups then
             begin
-              lstrev.Duplicates:=dupIgnore;
-              lst.Duplicates:=dupIgnore;
+              {lstrev.Duplicates:=dupIgnore;
+              lst.Duplicates:=dupIgnore;}
             end
           else
             begin
               lstrev.Duplicates:=dupAccept;
               lst.Duplicates:=dupAccept;
-            end;                                }
-          //ShowMessage('before cycle: '+lst.Count.toString());
-          ind:=1;
+            end;
           while(filestream.Read(ch,1)=1) do
              if  (ch <> sLineBreak) then
                line+=ch
              else
                begin
-                 if (lst.IndexOf(line)=-1) then
+                 if ((lst.IndexOf(line)=-1) or (opt.DelDuplicates=skip)) then
                      lst.Add(line);
-
-                 alst[ind]:=line;
                  line:='';
-                 ind+=1;
                end;
-          //ShowMessage('after cycle '+lst.Count.toString()+' '+ind.tostring());//+ind.tostring());
           // получены все строки из файла
           // ShowMessage(IntToStr(lst.Count)+lst[3]);
 
           if not (opt.SortAction=off) then
-            begin
-              lst.Create;
-              for i:=1 to ind do
-                begin
-                  lst.Add(alst[i]);
-                end;
-              {for i:=1 to ind do
-                ShowMessage(alst[i]);}
-              lst.sort;
-
-              {for i:=0 to lst.count-1 do
-                 alst[i+1]:=lst[i];}
-            end;
+            lst.Sort;
           if opt.SortAction=desc then
             begin
               for i:=0 to lst.Count-1 do
-                begin
-                  lstrev.Add(lst[lst.Count-1-i]);
-
-                end;
+                lstrev.Add(lst[lst.Count-1-i]);
               lst:=lstrev
             end;
 
-          //ShowMessage('after sorting '+lst.Count.toString());
-
           filestream.Destroy;
           FileCreate(path+'.new');
-          //ShowMessage('before writing '+lst.Count.toString());
-           assignFile(fil,path+'.new');
-           rewrite(fil);
-          //filestream:=TFileStream.Create(path+'.new',fmOpenWrite);
-          for i:=1 to ind do
-            begin
-              //filestream.Write(alst[i][1],length(alst[i]));
-              writeln(fil,lst[i]);
-            end;
-          //lst.SaveToStream(filestream);//writeerror
+          filestream:=TFileStream.Create(path+'.new',fmOpenWrite);
+          lst.SaveToStream(filestream);//writeerror
         finally
-          closeFile(fil);
-          // вызывало ошибку
-          //filestream.free;
+          filestream.free;
         end;
       end
     else
